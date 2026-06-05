@@ -196,6 +196,12 @@ fn build_tray(app: &AppHandle) -> tauri::Result<()> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        // Must be the first plugin: a second launch (e.g. from the app launcher)
+        // hands off to the running instance and exits instead of opening a new
+        // window. The running instance focuses its window.
+        .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+            show_window(app);
+        }))
         .manage::<MprisTx>(Mutex::new(None))
         .invoke_handler(tauri::generate_handler![update_now_playing])
         .setup(|app| {

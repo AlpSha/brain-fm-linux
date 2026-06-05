@@ -18,6 +18,7 @@ tauri = { version = "2", features = ["tray-icon", "image-png", "devtools"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 souvlaki = "0.7"
+tauri-plugin-single-instance = "2"
 
 [profile.release]
 panic = "abort"
