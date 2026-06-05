@@ -1,6 +1,6 @@
 [package]
 name = "brain-fm"
-version = "0.1.0"
+version = "0.1.1"
 description = "Unofficial Brain.fm desktop wrapper for Linux"
 authors = ["alphawk"]
 edition = "2021"

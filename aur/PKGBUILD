@@ -1,7 +1,7 @@
 # Maintainer: Alp Sahin <alp@sahin.club>
 pkgname=brain-fm
 _reponame=brain-fm-linux
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="Unofficial Brain.fm desktop app (Tauri) with MPRIS media-key support and a system tray"
 arch=('x86_64')
