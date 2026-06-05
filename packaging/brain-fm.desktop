@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Brain.fm
+GenericName=Focus Music Player
+Comment=Focus, relax, sleep and meditate with functional music
+Exec=brain-fm
+Icon=brain-fm
+Terminal=false
+Categories=AudioVideo;Audio;Player;
+Keywords=focus;music;productivity;brain;fm;relax;sleep;meditate;
+StartupWMClass=brain-fm
+StartupNotify=true

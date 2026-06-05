@@ -1,0 +1,12 @@
+# Rust / Tauri
+src-tauri/target/
+src-tauri/gen/
+
+# Node (only used for the optional `tauri` dev CLI)
+node_modules/
+
+# makepkg artifacts
+pkg/
+src/
+*.pkg.tar.*
+*.log

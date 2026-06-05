@@ -1,0 +1,26 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a1144"/>
+      <stop offset="0.55" stop-color="#7b2d8e"/>
+      <stop offset="1" stop-color="#c8359b"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f0d9ff"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <!-- infinity / continuous-listening symbol -->
+  <path d="M352 512
+           c0 -82 -66 -148 -148 -148
+           c-82 0 -148 66 -148 148
+           c0 82 66 148 148 148
+           c70 0 130 -48 308 -148
+           c178 -100 238 -148 308 -148
+           c82 0 148 66 148 148
+           c0 82 -66 148 -148 148
+           c-82 0 -148 -66 -148 -148"
+        fill="none" stroke="url(#stroke)" stroke-width="64" stroke-linecap="round"
+        transform="scale(0.8) translate(128,128)" opacity="0.95"/>
+</svg>

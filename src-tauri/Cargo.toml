@@ -1,0 +1,27 @@
+[package]
+name = "brain-fm"
+version = "0.1.0"
+description = "Unofficial Brain.fm desktop wrapper for Linux"
+authors = ["alphawk"]
+edition = "2021"
+rust-version = "1.77"
+
+[lib]
+name = "brain_fm_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+souvlaki = "0.7"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
