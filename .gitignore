@@ -1,12 +1,16 @@
-# Rust / Tauri
+# Rust / Tauri build output
 src-tauri/target/
 src-tauri/gen/
 
-# Node (only used for the optional `tauri` dev CLI)
+# Node (only the optional `tauri` dev CLI lives here)
 node_modules/
 
-# makepkg artifacts
-pkg/
-src/
+# makepkg scratch dirs + build artifacts
+# NOTE: anchored with a leading slash so `src/` does NOT match src-tauri/src/
+/pkg/
+/src/
+/aur/pkg/
+/aur/src/
+/aur/*.tar.gz
 *.pkg.tar.*
 *.log
