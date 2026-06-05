@@ -87,15 +87,40 @@ playerctl -p brainfm metadata; playerctl -p brainfm play-pause
 
 ## Cutting a new release
 
-The AUR package builds from a tagged GitHub release tarball. To ship a new
-version:
+Releases are automated. To ship a new version:
 
-1. Bump `version` in `src-tauri/tauri.conf.json` and `src-tauri/Cargo.toml`.
-2. Commit, then tag and push: `git tag -a vX.Y.Z -m "brain-fm X.Y.Z" && git push origin vX.Y.Z`.
-3. `gh release create vX.Y.Z` (the archive URL is generated automatically).
-4. Update `aur/PKGBUILD`: set `pkgver`, refresh `sha256sums`
-   (`updpkgsums`), regenerate `.SRCINFO` (`makepkg --printsrcinfo > .SRCINFO`).
-5. Push `PKGBUILD` + `.SRCINFO` to `ssh://aur@aur.archlinux.org/brain-fm.git`.
+```sh
+scripts/release.sh patch      # or: minor | major | 1.2.3
+```
+
+That bumps the version in `tauri.conf.json`, `Cargo.toml`, `Cargo.lock` and
+`aur/PKGBUILD`, commits, tags `vX.Y.Z`, and (after a confirmation prompt) pushes.
+
+Pushing the tag triggers [`.github/workflows/release.yml`](.github/workflows/release.yml), which:
+
+1. creates the GitHub release (auto-generated notes),
+2. computes the release-tarball `sha256` and finalizes `aur/PKGBUILD`,
+3. regenerates `.SRCINFO` and **pushes the package to the AUR**,
+4. syncs the finalized `PKGBUILD`/`.SRCINFO` back to `master`.
+
+### One-time CI setup
+
+The workflow needs an SSH key authorized on your AUR account, stored as the
+`AUR_SSH_PRIVATE_KEY` repo secret:
+
+```sh
+# 1. dedicated CI key (no passphrase)
+ssh-keygen -t ed25519 -f ~/.ssh/aur_ci -N "" -C "brain-fm-ci"
+
+# 2. add the PUBLIC key to your AUR account (Account → "SSH Public Key", one per line):
+cat ~/.ssh/aur_ci.pub
+
+# 3. store the PRIVATE key as a GitHub Actions secret:
+gh secret set AUR_SSH_PRIVATE_KEY -R AlpSha/brain-fm-linux < ~/.ssh/aur_ci
+```
+
+You can reuse your existing AUR key instead of a dedicated one, but a separate
+CI key is easy to revoke.
 
 ## Notes / caveats
 
