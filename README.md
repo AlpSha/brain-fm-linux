@@ -21,20 +21,19 @@ use, plus Linux desktop integration:
 
 ## Install (Arch / CachyOS)
 
-From the project root:
+From the [AUR](https://aur.archlinux.org/packages/brain-fm):
 
 ```sh
-makepkg -si
+paru -S brain-fm     # or: yay -S brain-fm
 ```
 
-That builds a release binary and installs `brain-fm` system-wide (binary,
-`.desktop` launcher, and hicolor icons). Then launch **Brain.fm** from your app
-launcher or run `brain-fm`.
+Then launch **Brain.fm** from your app launcher or run `brain-fm`.
 
-A prebuilt package is also produced in the project root; install it directly with:
+### Build from source without an AUR helper
 
 ```sh
-sudo pacman -U brain-fm-0.1.0-1-x86_64.pkg.tar.zst
+cd aur
+makepkg -si          # downloads the v0.1.0 release tarball, builds, installs
 ```
 
 ### Dependencies
@@ -64,7 +63,7 @@ release build; `makepkg` uses exactly that path.
 | `src-tauri/tauri.conf.json` | Tauri config (window built in code, remote URL). |
 | `src-tauri/capabilities/default.json` | Allows the `my.brain.fm` origin to call the IPC command. |
 | `packaging/brain-fm.desktop` | Desktop launcher entry. |
-| `PKGBUILD` | Builds + packages from this working tree. |
+| `aur/PKGBUILD` + `aur/.SRCINFO` | AUR package; builds from the tagged release tarball. |
 
 ## If media keys don't control playback
 
@@ -86,25 +85,24 @@ busctl --user get-property org.mpris.MediaPlayer2.brainfm \
 playerctl -p brainfm metadata; playerctl -p brainfm play-pause
 ```
 
-## Publishing to the AUR
+## Cutting a new release
 
-This `PKGBUILD` builds from the local tree for convenience. For a real AUR
-submission, host the source (a tagged GitHub release tarball or a git repo) and
-switch to the standard layout:
+The AUR package builds from a tagged GitHub release tarball. To ship a new
+version:
 
-- Populate `source=("$pkgname-$pkgver.tar.gz::<release-url>")` and
-  `sha256sums=(...)` (or a `git+https://…` source for a `-git` package).
-- Replace the `$startdir` references in `build()`/`package()` with
-  `$srcdir/$pkgname-$pkgver`.
-- Drop `options=('!lto')` if you remove the in-tree build.
-
-The local build emits a harmless `Package contains reference to $srcdir` warning
-because it compiles inside the source tree; the hosted-source layout above
-removes it.
+1. Bump `version` in `src-tauri/tauri.conf.json` and `src-tauri/Cargo.toml`.
+2. Commit, then tag and push: `git tag -a vX.Y.Z -m "brain-fm X.Y.Z" && git push origin vX.Y.Z`.
+3. `gh release create vX.Y.Z` (the archive URL is generated automatically).
+4. Update `aur/PKGBUILD`: set `pkgver`, refresh `sha256sums`
+   (`updpkgsums`), regenerate `.SRCINFO` (`makepkg --printsrcinfo > .SRCINFO`).
+5. Push `PKGBUILD` + `.SRCINFO` to `ssh://aur@aur.archlinux.org/brain-fm.git`.
 
 ## Notes / caveats
 
 - Unofficial and not affiliated with Brain.fm. Wrapping their web app may be
   subject to their Terms of Service — use for personal convenience.
+- Social logins (Apple/Google/Facebook) open auth popups; the webview allows
+  them via `on_new_window` so the session propagates back to the main window.
 - The `WebKit ... preconnectTo` line on startup is a benign WebKitGTK log, not a
-  crash.
+  crash. The `Package contains reference to $srcdir` makepkg warning is cosmetic
+  (a build-machine-local path baked by tauri-codegen).
