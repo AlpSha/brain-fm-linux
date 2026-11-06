@@ -2,7 +2,7 @@
 name = "brain-fm"
 version = "0.1.2"
 description = "Unofficial Brain.fm desktop wrapper for Linux"
-authors = ["alphawk"]
+authors = ["AlpSha"]
 edition = "2021"
 rust-version = "1.77"
 
